@@ -7,6 +7,11 @@
 
 
 ## Server-Side
+Does a variable exist?
+```js
+if(typeof variableName != 'undefined') { }
+```
+
 Verifying a record is found using `GlideRecord.get`
 ```js
 var gr = new GlideRecord(table);
