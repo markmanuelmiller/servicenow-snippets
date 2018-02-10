@@ -4,9 +4,22 @@
 1. [Server-Side](#server-side)
 1. [Client-Side](#client-side)
 1. [Service Portal](#service-portal)
+1. [Background Scripts](#background-scripts)
 
 
 ## Server-Side
+
+Get display field of a table
+```js
+gr.getDisplayName()
+```
+Example:
+```js
+var gr = new GlideRecord('incident');
+gr.query();
+gs.print(gr.getDisplayName()); /* number */
+```
+
 Does a variable exist?
 ```js
 if(typeof variableName != 'undefined') { }
@@ -15,8 +28,13 @@ if(typeof variableName != 'undefined') { }
 Verifying a record is found using `GlideRecord.get`
 ```js
 var gr = new GlideRecord(table);
-gr.get(field, value);
-if... @todo
+if(gr.get(sys_id)) {
+  // it is found
+  gs.print(gr.sys_created_on);
+} else {
+  // it isn't found
+  gs.print('record not found');
+}
 ```
 
 Service Catalog - Excluding Class Names
@@ -51,7 +69,34 @@ workflow.runFlows('record_sys_id', 'update');
 
 ## Service Portal
 
+### HTML
+Iterating over objects while applying a filter
+```html
+<div class="col-md-4 clearfix item-container"
+     ng-repeat="item in c.data.items | filter:c.data.term"
+     ng-include="data.templateID">
+```
+
 ### Client Controller
+
+Attempting to add GlideAjax to a widget Controller
+```js
+c.glideAjax = function() {
+
+		var ga = new GlideAjax('StoreUtilsAjax');
+		ga.addParam('sysparm_name', 'getItems');
+		ga.getXML(c.callback);
+	};
+
+	c.callback = function(response) {
+		var answer = response.responseXML.documentElement.getAttribute("answer");
+		console.log(">>>>>>: " + answer);
+	};
+
+	c.glideAjax();
+```
+
+
 Different Angular Dependencies
 ```js
 function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window, $document) { /* code */ })
@@ -107,6 +152,15 @@ $scope.closeAndEdit = function() {
 
 
 ### Server Script
+
+```js
+$sp.getFieldsObject();
+```
+
+```js
+
+```
+
 Get a Widget from the **Portal** Record
 ```js
 data.typeahead = $sp.getWidgetFromInstance('typeahead-search');
@@ -115,4 +169,75 @@ data.typeahead = $sp.getWidgetFromInstance('typeahead-search');
 Get Service Portal URL Suffix
 ```js
 var url_suffix = $sp.getPortalRecord().getValue('url_suffix');
+```
+
+
+### Mix
+Adding pagination to a widget
+```html
+<!-- footer -->
+<div ng-if="c.numberOfPages() > 1"
+     class="wrapper">
+  <div class="btn-toolbar m-r pull-left">
+    <div class="btn-group">
+      <a ng-disabled="c.curPage == 0" href="javascript:void(0)" ng-click="c.curPage=c.curPage-1" class="btn btn-default"><i class="fa fa-chevron-left"></i></a>
+    </div>
+    <div ng-if="c.numberOfPages() > 1 && c.numberOfPages() < 20" class="btn-group">
+      <a ng-repeat="i in getNumber(c.numberOfPages()) track by $index" ng-click="c.curPage = $index" href="javascript:void(0)" ng-class="{active: ($index) == c.curPage}" type="button" class="btn btn-default">{{$index + 1}}</a>
+    </div>
+    <div class="btn-group">
+      <a ng-disabled="c.curPage >= c.datalists.length/c.pageSize - 1" href="javascript:void(0)" ng-click="c.curPage = c.curPage+1" class="btn btn-default"><i class="fa fa-chevron-right"></i></a>
+    </div>
+  </div>
+  <div class="m-t-xs panel-title">Page {{c.curPage + 1}} of {{ c.numberOfPages() }}</div>
+
+  <span class="clearfix"></span>
+</div>
+```
+
+
+
+## Background Scripts
+
+Force a record into an update set
+```js
+var rec = new GlideRecord('table_name_of_record');
+rec.get('sys_id_of_record');
+//Push the record into the current update set   
+var um = new GlideUpdateManager2();
+um.saveRecord(rec);
+```
+
+
+## Other
+
+iFrames in Service Portal and CSS manipulation
+```html
+
+<div class="col-lg-12 col-md-12 page-section">
+  <div class="section-head">
+      UPDATE SECURITY QUESTIONS
+    </div>
+  <div class="frosted">
+  	<iframe id="enrollChange" src="$pwd_enrollment_form_container.do" class="i-frame2" scrolling="no"></iframe>
+  </div>
+</div>
+<script>
+   $('#enrollChange').on('load', function() {
+          $(this).contents().find('.navbar').css({
+              'border': 'none',
+              'background': 'transparent',
+              'box-shadow': 'none',
+              'margin-left': '20px',
+              'margin-right': '20px'
+          });
+		
+          $(this).contents().find('.navbar-btn').css({
+              'display': 'none',
+          });  
+    		  $(this).contents().find('.nav-tabs > li.active').css({
+              'border-top-color': 'rgb(86, 117, 141)',
+          });         
+    });   
+</script>
 ```
