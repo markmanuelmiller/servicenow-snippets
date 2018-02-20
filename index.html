@@ -47,7 +47,7 @@
                     
                     <hr/>
 
-                    <div class="entries language-javascript line-numbers">
+                    <div class="entries language-javascript">
 
 
 
@@ -74,7 +74,7 @@
                     
 
                     <p>Get display field of a table</p>                    
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         var gr = new GlideRecord('incident');
                         gr.query();
                         gs.print(gr.getDisplayName()); /* number */
@@ -87,7 +87,7 @@
                     </code></pre>
 
                     <p>Verifying a record is found using `GlideRecord.get`</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         var gr = new GlideRecord(table);
                         if(gr.get(sys_id)) {
                             // it is found
@@ -124,7 +124,7 @@
                     
 
                     <p>Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         var workflow = new Workflow();
                         workflow.runFlows('record_sys_id', 'update');
                     </code></pre>
@@ -136,7 +136,7 @@
                     <h3>Client Controller</h3>
 
                     <p>Attempting to add GlideAjax to a widget Controller</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         c.glideAjax = function() {
 
                             var ga = new GlideAjax('StoreUtilsAjax');
@@ -158,7 +158,7 @@
 
 
                     <p>Opening a Modal & Passing Scope to `$uibModal`</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         $scope.openLogin = function () {
                             $scope.modalInstance = $uibModal.open({
                                 templateUrl: 'modalLogin',
@@ -169,7 +169,7 @@
                     
 
                     <p>Implementing an Angular Template</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         function redirectUser(lastLoginDate){
                             if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
                                 $scope.modalInstance = $uibModal.open({
@@ -183,7 +183,7 @@
 
 
                     <p>Using `$location` to Redirect User</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         $scope.closeAndEdit = function() {
                             $scope.closeAndSave();
                             $location.url('?id=user_profile');
@@ -219,7 +219,7 @@
                     ## @TODO
 
                     <p>Form field change in Client Script</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         $scope.$on("field.change", function(evt, parms) {
                             //if (parms.field.name == c.data.user.name) {
                             if (parms.oldValue == c.data.user.sys_id) {
@@ -237,7 +237,7 @@
 
 
                     <p>Service Portal Angular Events</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         $rootScope.$on('sp.form.record.updated', function() {
                             $scope.data.userForm.data.f._ui_actions[1].is_button = true;
                         });
@@ -255,7 +255,7 @@
 
 
                     <p>Display Choice Label instead of Choice Value</p>
-                    <pre><code>
+                    <pre class="line-numbers"><code>
                         var ritm = new GlideRecord("sc_req_item");
                         ritm.query();
                         while(ritm.next()){
