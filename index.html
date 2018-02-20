@@ -11,6 +11,7 @@
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="stylesheet" href="vendor/bootstrap.css">
+        <link rel="stylesheet" href="vendor/prism.css">
         <link rel="stylesheet" href="styles/main.css">
     </head>
     <body>
@@ -35,153 +36,164 @@
                         <li>Server-Side</li>
                         <ol>
                             <li>GlideRecord</li>
+                            <li>Portal Specific</li>
+                            <li>Background Scripts</li>
                         </ol>
                         <li>Client-Side</li>
+                        <ol>
+                            <li>Portal Client Controller</li>
+                        </ol>
                     </ol>
                     
                     <hr/>
 
+                    <div class="entries language-javascript">
 
 
 
                     <h2>Server-Side</h2>
 
-                    <p>Get display field of a table</p>
-                    <code>gr.getDisplayName()</code>
-                    Example:
+                    <h3>Serivce Portal API ($sp)</h3>
+
+                    <p>Get a Widget from the Portal Record</p>
+                    <pre><code>
+                        data.typeahead = $sp.getWidgetFromInstance('typeahead-search');
+                    </code></pre>
+                    
+                    
+                    <p>Get Service Portal URL Suffix</p>
+                    <pre><code>
+                        var url_suffix = $sp.getPortalRecord().getValue('url_suffix');
+                    </code></pre>
+
+
+                    <p>Get Fields Object</p>
+                    <pre><code>
+                        $sp.getFieldsObject();
+                    </code></pre>
+                    
+
+                    <p>Get display field of a table</p>                    
                     <pre><code>
                         var gr = new GlideRecord('incident');
                         gr.query();
                         gs.print(gr.getDisplayName()); /* number */
                     </code></pre>
 
-                    Does a variable exist?
-                    ```js
-                    if(typeof variableName != 'undefined') { }
-                    ```
 
-                    Verifying a record is found using `GlideRecord.get`
-                    ```js
-                    var gr = new GlideRecord(table);
-                    if(gr.get(sys_id)) {
-                    // it is found
-                    gs.print(gr.sys_created_on);
-                    } else {
-                    // it isn't found
-                    gs.print('record not found');
-                    }
-                    ```
+                    <p>Does a variable exist?</p>
+                    <pre><code>
+                        if(typeof variableName != 'undefined') { }
+                    </code></pre>
 
-                    Service Catalog - Excluding Class Names
-                    ```js
-                    sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard,sc_cat_item_content');
-                    ```
-
-                    Don't update system fields
-                    ```js
-                    gr.autoSysFields(false);
-                    ```
-
-                    Don't run Business Rules
-                    ```js
-                    gr.setWorkflow(false);
-                    ```
-
-                    Force update on record
-                    ```
-                    gr.forceUpdate(true);
-                    ```
-
-                    Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow
-                    ```js
-                    var workflow = new Workflow();
-                    workflow.runFlows('record_sys_id', 'update');
-                    ```
+                    <p>Verifying a record is found using `GlideRecord.get`</p>
+                    <pre><code>
+                        var gr = new GlideRecord(table);
+                        if(gr.get(sys_id)) {
+                            // it is found
+                            gs.print(gr.sys_created_on);
+                        } else {
+                            // it isn't found
+                            gs.print('record not found');
+                        }
+                    </code></pre>
 
 
-                    ## Client-Side
+                    <p>Service Catalog - Excluding Class Names</p>
+                    <pre><code>
+                        sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard,sc_cat_item_content');
+                    </code></pre>
 
 
+                    <p>Don't update system fields</p>
+                    <pre><code>
+                        gr.autoSysFields(false);
+                    </code></pre>
                     
 
-                    ### Client Controller
+                    <p>Don't run Business Rules</p>
+                    <pre><code>
+                        gr.setWorkflow(false);
+                    </code></pre>
 
-                    Attempting to add GlideAjax to a widget Controller
-                    ```js
-                    c.glideAjax = function() {
+
+                    <p>Force update on record</p>
+                    <pre><code>
+                        gr.forceUpdate(true);
+                    </code></pre>
+                    
+
+                    <p>Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow</p>
+                    <pre><code>
+                        var workflow = new Workflow();
+                        workflow.runFlows('record_sys_id', 'update');
+                    </code></pre>
+                
+                    <hr/>
+
+                    <h2>Client-Side</h2>
+
+                    <h3>Client Controller</h3>
+
+                    <p>Attempting to add GlideAjax to a widget Controller</p>
+                    <pre><code>
+                        c.glideAjax = function() {
 
                             var ga = new GlideAjax('StoreUtilsAjax');
                             ga.addParam('sysparm_name', 'getItems');
                             ga.getXML(c.callback);
                         };
-
                         c.callback = function(response) {
                             var answer = response.responseXML.documentElement.getAttribute("answer");
                             console.log(">>>>>>: " + answer);
                         };
-
                         c.glideAjax();
-                    ```
+                    </code></pre>
 
 
-                    Different Angular Dependencies
-                    ```js
-                    function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window, $document) { /* code */ })
-                    ```
-
-                    Opening a Modal & Passing Scope to `$uibModal`
-                    ```js
-                    $scope.openLogin = function () {
-                    $scope.modalInstance = $uibModal.open({
-                        templateUrl: 'modalLogin',
-                        scope: $scope
-                    });
-                    };
-                    ```
-
-                    Implementing an Angular Template
-                    ```js
-                    function redirectUser(lastLoginDate){
-                    if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
-                        $scope.modalInstance = $uibModal.open({
-                        templateUrl: 'welcomeTemplate',
-                        windowClass: 'welcome-pref-modal',
-                        scope: $scope
-                        });
-                    }
-                    }
-                    ```
-
-                   
-
-                    Using `$location` to Redirect User
-                    ```js
-                    $scope.closeAndEdit = function() {
-                    $scope.closeAndSave();
-                    $location.url('?id=user_profile');
-                    };
-                    ```
+                    <p>Different Angular Dependencies</p>
+                    <pre><code>
+                        function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window, $document) { /* code */ })
+                    </code></pre>
 
 
-                    ### Server Script
+                    <p>Opening a Modal & Passing Scope to `$uibModal`</p>
+                    <pre><code>
+                        $scope.openLogin = function () {
+                            $scope.modalInstance = $uibModal.open({
+                                templateUrl: 'modalLogin',
+                                scope: $scope
+                            });
+                        };
+                    </code></pre>
+                    
 
-                    ```js
-                    $sp.getFieldsObject();
-                    ```
+                    <p>Implementing an Angular Template</p>
+                    <pre><code>
+                        function redirectUser(lastLoginDate){
+                            if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
+                                $scope.modalInstance = $uibModal.open({
+                                    templateUrl: 'welcomeTemplate',
+                                    windowClass: 'welcome-pref-modal',
+                                    scope: $scope
+                                });
+                            }
+                        }
+                    </code></pre>
 
-                    ```js
 
-                    ```
+                    <p>Using `$location` to Redirect User</p>
+                    <pre><code>
+                        $scope.closeAndEdit = function() {
+                            $scope.closeAndSave();
+                            $location.url('?id=user_profile');
+                        };
+                    </code></pre>
+                
 
-                    Get a Widget from the **Portal** Record
-                    ```js
-                    data.typeahead = $sp.getWidgetFromInstance('typeahead-search');
-                    ```
 
-                    Get Service Portal URL Suffix
-                    ```js
-                    var url_suffix = $sp.getPortalRecord().getValue('url_suffix');
-                    ```
+
+                    
 
 
 
@@ -204,6 +216,59 @@
 
 
 
+                    ## @TODO
+
+                    <p>Form field change in Client Script</p>
+                    <pre><code>
+                        $scope.$on("field.change", function(evt, parms) {
+                            //if (parms.field.name == c.data.user.name) {
+                            if (parms.oldValue == c.data.user.sys_id) {
+                                //console.log("changing...");
+                                //c.data.setLocation = parms.newValue;
+                            }
+                            c.data.currentUser = parms.newValue;
+                            c.server.update().then(function(response) {
+                                //spUtil.update($scope);
+                            });
+                        }); 
+
+                    </code></pre>
+
+
+
+                    <p>Service Portal Angular Events</p>
+                    <pre><code>
+                        $rootScope.$on('sp.form.record.updated', function() {
+                            $scope.data.userForm.data.f._ui_actions[1].is_button = true;
+                        });
+                        
+                        $rootScope.$on('data_table.click', function(event,obj) {
+                            var link = {};
+                            link.id = $scope.data.page;
+                            link.table = obj.table;
+                            link.sys_id = obj.sys_id;
+                            $location.search(link);
+                        });
+
+                        $scope.$on("field.change", function(evt, parms) { }
+                    </code></pre>
+
+
+                    <p>Display Choice Label instead of Choice Value</p>
+                    <pre><code>
+                        var ritm = new GlideRecord("sc_req_item");
+                        ritm.query();
+                        while(ritm.next()){
+                            ...
+                            reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
+                            ...
+                        }
+                    </code></pre>
+
+
+
+
+                    </div>
 
                     
                 </div>
@@ -227,6 +292,7 @@
 
         <script src="vendor/jquery-3.3.1.min.js"></script>
         <script src="vendor/bootstrap.js"></script>
+        <script src="vendor/prism.js"></script>
         <script src="app/main.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. 
