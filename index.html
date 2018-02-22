@@ -72,12 +72,12 @@
                             <pre><code>$sp.getFieldsObject();</code></pre>
                         </div>
 
-                        <div class="entry">
-                            <p>Get display field of a table</p>                    
-                            <pre class="line-numbers"><code>var gr = new GlideRecord('incident');
-                                gr.query();
-                                gs.print(gr.getDisplayName()); /* number */</code></pre>
-                        </div>
+<div class="entry">
+<p>Get display field of a table</p>                    
+<pre class="line-numbers"><code>var gr = new GlideRecord('incident');
+gr.query();
+gs.print(gr.getDisplayName()); /* number */</code></pre>
+</div>
 
                         <div class="entry">
                             <p>Does a variable exist?</p>
@@ -233,6 +233,68 @@
                             }</code></pre>
 
 
+                        
+                        <p>CatItem API</p>
+                        <pre class="line-numbers"><code>var catalogItemJS = new sn_sc.CatItem(sc.getUniqueValue());
+                                if (!catalogItemJS.canView())
+                                    continue;
+                                var catItemDetails = catalogItemJS.getItemSummary();</code></pre>
+
+                        <p>CatCategory API</p>
+                        <pre class="line-numbers"><code>categoryJS = new sn_sc.CatCategory(data.category_id);
+                        if (!categoryJS.canView()) {
+                        data.error = gs.getMessage("You do not have permission to see this category");
+                        return;
+                        }</code></pre>
+
+                        <p>CatalogSearch API</p>
+                        <pre class="line-numbers"><code>var items = data.items = [];
+                                var catalog = $sp.getValue('sc_catalog');
+                                var sc = new sn_sc.CatalogSearch().search(catalog, data.category_id, '', false, options.depth_search);
+                                sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard');
+                                if (data.keywords)
+                                    sc.addQuery('123TEXTQUERY321', data.keywords);
+                                sc.orderBy('order');
+                                sc.orderBy('name');
+                                sc.query();
+                        </code></pre>
+
+
+                        <p>Recursive Function</p>
+                        <pre class="line-numbers"><code>var results = [];
+                                var nestedCategories = ['898fc5a0db00d74074c99447db9619d8'];
+                                
+                                getChildren(nestedCategories[0]);
+                                searchItems();
+                                $sp.logSearch('sc_cat_item', data.q, results.length);
+                                return results;
+                                
+                                
+                                function getChildren(sysID) {
+                                    var gr = new GlideRecord('sc_category');
+                                    gr.addQuery('parent', sysID);
+                                    gr.addActiveQuery();
+                                    gr.query();
+                                    while(gr.next()) {
+                                        var current = gr.sys_id.toString();
+                                        nestedCategories.push(current);
+                                        if(hasChildren(current)) {
+                                            getChildren(current);
+                                        }
+                                    }
+                                }
+                            
+                                function hasChildren(sysID) {
+                                    var gr = new GlideRecord('sc_category');
+                                    gr.addQuery('parent', sysID);
+                                    gr.addActiveQuery();
+                                    gr.query();
+                                    if(gr.next()) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }</code></pre>
 
 
                     </div>
