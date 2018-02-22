@@ -59,17 +59,17 @@
 
                         <div class="entry">
                             <p>Get a Widget from the Portal Record</p>
-                            <pre><code>data.typeahead = $sp.getWidgetFromInstance('typeahead-search');</code></pre>
+                            <pre class="line-numbers"><code>data.typeahead = $sp.getWidgetFromInstance('typeahead-search');</code></pre>
                         </div>
 
                         <div class="entry">
                             <p>Get Service Portal URL Suffix</p>
-                            <pre><code>var url_suffix = $sp.getPortalRecord().getValue('url_suffix');</code></pre>
+                            <pre class="line-numbers"><code>var url_suffix = $sp.getPortalRecord().getValue('url_suffix');</code></pre>
                         </div>
                         
                         <div class="entry">
                             <p>Get Fields Object</p>
-                            <pre><code>$sp.getFieldsObject();</code></pre>
+                            <pre class="line-numbers"><code>$sp.getFieldsObject();</code></pre>
                         </div>
 
 <div class="entry">
@@ -79,48 +79,50 @@ gr.query();
 gs.print(gr.getDisplayName()); /* number */</code></pre>
 </div>
 
-                        <div class="entry">
-                            <p>Does a variable exist?</p>
-                            <pre><code>if(typeof variableName != 'undefined') { }</code></pre>
-                        </div>
+<div class="entry">
+    <p>Does a variable exist?</p>
+    <pre class="line-numbers"><code>if(typeof variableName != 'undefined') { }</code></pre>
+</div>
                         
-                        <div class="entry">
-                            <p>Verifying a record is found using `GlideRecord.get`</p>
-                            <pre class="line-numbers"><code>var gr = new GlideRecord(table);
-                                if(gr.get(sys_id)) {
-                                    // it is found
-                                    gs.print(gr.sys_created_on);
-                                } else {
-                                    // it isn't found
-                                    gs.print('record not found');
-                                }</code></pre>
-                        </div>
+<div class="entry">
+    <p>Verifying a record is found using `GlideRecord.get`</p>
+    <pre class="line-numbers"><code>var gr = new GlideRecord(table);
+    if(gr.get(sys_id)) {
+        // it is found
+        gs.print(gr.sys_created_on);
+    } else {
+        // it isn't found
+        gs.print('record not found');
+    }</code></pre>
+</div>
 
-                        <div class="entry">
-                            <p>Service Catalog - Excluding Class Names</p>
-                            <pre><code>sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard,sc_cat_item_content');</code></pre>
-                        </div>
+<div class="entry">
+    <p>Service Catalog - Excluding Class Names</p>
+    <pre class="line-numbers"><code>sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard,sc_cat_item_content');</code></pre>
+</div>
 
-                        <div class="entry">
-                            <p>Don't update system fields</p>
-                            <pre><code>gr.autoSysFields(false);</code></pre>
-                        </div>
+<div class="entry">
+    <p>Don't update system fields</p>
+    <pre class="line-numbers"><code>gr.autoSysFields(false);</code></pre>
+</div>
 
-                        <div class="entry">
-                            <p>Don't run Business Rules</p>
-                            <pre><code>gr.setWorkflow(false);</code></pre>
-                        </div>
+<div class="entry">
+    <p>Don't run Business Rules</p>
+    <pre class="line-numbers"><code>gr.setWorkflow(false);</code></pre>
+</div>
 
-                        <div class="entry">
-                            <p>Force update on record</p>
-                            <pre><code>gr.forceUpdate(true);</code></pre>
-                        </div>`
+<div class="entry">
+    <p>Force update on record</p>
+    <pre class="line-numbers"><code>gr.forceUpdate(true);</code></pre>
+</div>
                         
                         
+<div class="entry">
+    <p>Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow</p>
+    <pre class="line-numbers"><code>var workflow = new Workflow();
+        workflow.runFlows('record_sys_id', 'update');</code></pre>
+</div>
 
-                        <p>Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow</p>
-                        <pre class="line-numbers"><code>var workflow = new Workflow();
-                            workflow.runFlows('record_sys_id', 'update');</code></pre>
                     
                         <hr/>
 
@@ -142,7 +144,7 @@ gs.print(gr.getDisplayName()); /* number */</code></pre>
 
 
                         <p>Different Angular Dependencies</p>
-                        <pre><code>function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window, $document) { /* code */ })</code></pre>
+                        <pre class="line-numbers"><code>function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window, $document) { /* code */ })</code></pre>
 
 
                         <p>Opening a Modal & Passing Scope to `$uibModal`</p>
