@@ -216,47 +216,56 @@ c.server.update().then(function(response) {
 
 
 
-
-<p>Service Portal Angular Events</p>
-<pre class="line-numbers"><code>$rootScope.$on('sp.form.record.updated', function() {
-$scope.data.userForm.data.f._ui_actions[1].is_button = true;
-});
-
-$rootScope.$on('data_table.click', function(event,obj) {
-var link = {};
-link.id = $scope.data.page;
-link.table = obj.table;
-link.sys_id = obj.sys_id;
-$location.search(link);
-});
-
-$scope.$on("field.change", function(evt, parms) { }</code></pre>
-
-
-<p>Display Choice Label instead of Choice Value</p>
-<pre class="line-numbers"><code>var ritm = new GlideRecord("sc_req_item");
-ritm.query();
-while(ritm.next()){
-...
-reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
-...
-}</code></pre>
+<div class="entry">
+    <p>Service Portal Angular Events</p>
+    <pre class="line-numbers"><code>$rootScope.$on('sp.form.record.updated', function() {
+    $scope.data.userForm.data.f._ui_actions[1].is_button = true;
+    });
+    
+    $rootScope.$on('data_table.click', function(event,obj) {
+    var link = {};
+    link.id = $scope.data.page;
+    link.table = obj.table;
+    link.sys_id = obj.sys_id;
+    $location.search(link);
+    });
+    
+    $scope.$on("field.change", function(evt, parms) { }</code></pre>
+</div>
 
 
+<div class="entry">
+    <p>Display Choice Label instead of Choice Value</p>
+    <pre class="line-numbers"><code>var ritm = new GlideRecord("sc_req_item");
+    ritm.query();
+    while(ritm.next()){
+    ...
+    reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
+    ...
+    }</code></pre>
+</div>
 
+
+
+<div class="entry">
 <p>CatItem API</p>
 <pre class="line-numbers"><code>var catalogItemJS = new sn_sc.CatItem(sc.getUniqueValue());
 if (!catalogItemJS.canView())
     continue;
 var catItemDetails = catalogItemJS.getItemSummary();</code></pre>
+</div>
 
+<div class="entry">
 <p>CatCategory API</p>
 <pre class="line-numbers"><code>categoryJS = new sn_sc.CatCategory(data.category_id);
 if (!categoryJS.canView()) {
 data.error = gs.getMessage("You do not have permission to see this category");
 return;
 }</code></pre>
+</div>
 
+
+<div class="entry">
 <p>CatalogSearch API</p>
 <pre class="line-numbers"><code>var items = data.items = [];
 var catalog = $sp.getValue('sc_catalog');
@@ -268,8 +277,9 @@ sc.orderBy('order');
 sc.orderBy('name');
 sc.query();
 </code></pre>
+</div>
 
-
+<div class="entry">
 <p>Recursive Function</p>
 <pre class="line-numbers"><code>var results = [];
 var nestedCategories = ['898fc5a0db00d74074c99447db9619d8'];
@@ -305,7 +315,7 @@ function hasChildren(sysID) {
         return false;
     }
 }</code></pre>
-
+</div>
 
             </div>
 
