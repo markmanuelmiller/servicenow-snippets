@@ -1,7 +1,50 @@
+body {
+    background-color: #eaeaea;
+}
+
+h1,h2,h3,h4,h5,h6,p,li {
+    font-family: 'Lato', arial;
+}
+
 h1 {
-    color: blue;
+    font-size: 5em;
+}
+
+h2 {
+    font-size: 4em;
+}
+
+p {
+    font-weight: 300;
 }
 
 .fixed {
     position: fixed;
+}
+
+
+.title {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.entry {
+    margin-top: 40px;
+}
+
+input {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: none;
+    border: none;
+    font-size: 50px;
+    padding-left: 20px;
+    font-family: 'Lato', arial;
+    font-weight: 100;
+    outline: none;
+}
+
+hr {
+    margin-top: 80px;
+    margin-bottom: 60px;
 }

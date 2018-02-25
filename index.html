@@ -10,11 +10,15 @@
         <!--<link rel="apple-touch-icon" href="icon.png">-->
         <!-- Place favicon.ico in the root directory -->
 
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,400,700" rel="stylesheet">
         <link rel="stylesheet" href="vendor/bootstrap.css">
         <link rel="stylesheet" href="vendor/prism.css">
         <link rel="stylesheet" href="styles/main.css">
+        
+
+        <script src="vendor/angular.min.js"></script>
     </head>
-    <body>
+    <body ng-app="servicenowSnippets" ng-controller="mainCtrl">
         <!--[if lte IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
@@ -22,14 +26,17 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    <h1>ServiceNow Snippets</h1>
-                    <p>by Mark Miller</p>
+                    <div class="title">
+                        <h1>ServiceNow Snippets</h1>
+                        <p>by Mark Miller</p>
+                    </div>
+                    
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4 fixed">
                     <p>Search:</p>
-                    <input />
+                    <input ng-model="term" />
                 </div>
                 <div class="col-md-8 offset-md-4">
 
@@ -52,6 +59,14 @@
 
                     <div class="entries language-javascript">
 
+                        <div class="entry" ng-repeat="e in entries | filter: term">
+                            <p ng-bind="{{e.title}}">{{e.title}}</p>
+                            <pre class="line-numbers"><code>{{e.code}}</code></pre>
+                        </div>
+
+
+
+                        
 <!--****************** SERVICE PORTAL SNIPPETS ******************-->
 <h2>Service Portal Snippets</h2>
 
@@ -60,159 +75,14 @@
 <h3>Header Options</h3>
 <h3>Misc</h3>
 
-<div class="entry">
-    <p>Get a Widget from the Portal Record</p>
-    <pre class="line-numbers"><code>data.typeahead = $sp.getWidgetFromInstance('typeahead-search');</code></pre>
-</div>
 
-<div class="entry">
-    <p>Get Service Portal URL Suffix</p>
-    <pre class="line-numbers"><code>var url_suffix = $sp.getPortalRecord().getValue('url_suffix');</code></pre>
-</div>
-
-<div class="entry">
-    <p>Get Fields Object</p>
-    <pre class="line-numbers"><code>$sp.getFieldsObject();</code></pre>
-</div>
-
-<div class="entry">
-<p>Get display field of a table</p>                    
-<pre class="line-numbers"><code>var gr = new GlideRecord('incident');
-gr.query();
-gs.print(gr.getDisplayName()); /* number */</code></pre>
-</div>
-
-<div class="entry">
-    <p>Does a variable exist?</p>
-    <pre class="line-numbers"><code>if(typeof variableName != 'undefined') { }</code></pre>
-</div>
-                        
-<div class="entry">
-    <p>Verifying a record is found using `GlideRecord.get`</p>
-    <pre class="line-numbers"><code>var gr = new GlideRecord(table);
-    if(gr.get(sys_id)) {
-        // it is found
-        gs.print(gr.sys_created_on);
-    } else {
-        // it isn't found
-        gs.print('record not found');
-    }</code></pre>
-</div>
-
-<div class="entry">
-    <p>Service Catalog - Excluding Class Names</p>
-    <pre class="line-numbers"><code>sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard,sc_cat_item_content');</code></pre>
-</div>
-
-<div class="entry">
-    <p>Don't update system fields</p>
-    <pre class="line-numbers"><code>gr.autoSysFields(false);</code></pre>
-</div>
-
-<div class="entry">
-    <p>Don't run Business Rules</p>
-    <pre class="line-numbers"><code>gr.setWorkflow(false);</code></pre>
-</div>
-
-<div class="entry">
-    <p>Force update on record</p>
-    <pre class="line-numbers"><code>gr.forceUpdate(true);</code></pre>
-</div>
-                        
-                        
-<div class="entry">
-    <p>Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow</p>
-    <pre class="line-numbers"><code>var workflow = new Workflow();
-        workflow.runFlows('record_sys_id', 'update');</code></pre>
-</div>
-
-                    
 <hr/>
+
 
 <!--****************** PLATFORM SNIPPETS ******************-->
 <h2>Platform Snippets</h2>
 <h3>Server-Side</h3>
 <h3>Client-Side</h3>
-
-<div class="entry">
-    <p>Attempting to add GlideAjax to a widget Controller</p>
-    <pre class="line-numbers"><code>c.glideAjax = function() {
-            var ga = new GlideAjax('StoreUtilsAjax');
-            ga.addParam('sysparm_name', 'getItems');
-            ga.getXML(c.callback);
-        };
-        c.callback = function(response) {
-            var answer = response.responseXML.documentElement.getAttribute("answer");
-            console.log(">>>>>>: " + answer);
-        };
-        c.glideAjax();</code></pre>
-</div>
-
-
-<div class="entry">
-    <p>Different Angular Dependencies</p>
-    <pre class="line-numbers"><code>function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window, $document) { /* code */ })</code></pre>
-</div>
-
-
-<div class="entry">
-    <p>Opening a Modal &amp; Passing Scope to `$uibModal`</p>
-    <pre class="line-numbers"><code>$scope.openLogin = function () {
-            $scope.modalInstance = $uibModal.open({
-                templateUrl: 'modalLogin',
-                scope: $scope
-            });
-        };</code></pre>
-</div>
-
-
-<div class="entry">
-    <p>Implementing an Angular Template</p>
-    <pre class="line-numbers"><code>function redirectUser(lastLoginDate){
-            if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
-                $scope.modalInstance = $uibModal.open({
-                    templateUrl: 'welcomeTemplate',
-                    windowClass: 'welcome-pref-modal',
-                    scope: $scope
-                });
-            }
-        }</code></pre>
-</div>
-
-
-<div class="entry">
-<p>Using `$location` to Redirect User</p>
-<pre class="line-numbers"><code>$scope.closeAndEdit = function() {
-        $scope.closeAndSave();
-        $location.url('?id=user_profile');
-    };</code></pre>
-</div>
-
-<div class="entry">
-<p>Force a record into an update set</p>
-<pre class="line-numbers"><code>var rec = new GlideRecord('table_name_of_record');
-    rec.get('sys_id_of_record');
-    //Push the record into the current update set   
-    var um = new GlideUpdateManager2();
-    um.saveRecord(rec);</code></pre>
-</div>
-
-                        
-                        
-<div class="entry">
-<p>Form field change in Client Script</p>
-<pre class="line-numbers"><code>$scope.$on("field.change", function(evt, parms) {
-//if (parms.field.name == c.data.user.name) {
-if (parms.oldValue == c.data.user.sys_id) {
-    //console.log("changing...");
-    //c.data.setLocation = parms.newValue;
-}
-c.data.currentUser = parms.newValue;
-c.server.update().then(function(response) {
-    //spUtil.update($scope);
-});
-});</code></pre>
-</div>
 
 
 
