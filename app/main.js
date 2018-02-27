@@ -85,20 +85,32 @@ app.controller('mainCtrl', function($scope) {
             category: "ps/ss"
         },{
             title: "Form field change in Client Script",
-            code: "$scope.$on('field.change', function(evt, parms) {\n\t//if (parms.field.name == c.data.user.name) {\n\tif (parms.oldValue == c.data.user.sys_id) {\n\t\t//console.log('changing...');\n\t\tc.data.setLocation = parms.newValue;\n\t}\nc.data.currentUser = parms.newValue;\nc.server.update().then(function(response) {\n\t//spUtil.update($scope);\n});\n});",
+            code: "$scope.$on(\'field.change\', function(evt, parms) {\r\n\t\/\/if (parms.field.name == c.data.user.name) {\r\n\tif (parms.oldValue == c.data.user.sys_id) {\r\n\t\tc.data.setLocation = parms.newValue;\r\n\t}\r\n    c.data.currentUser = parms.newValue;\r\n    c.server.update().then(function(response) {\r\n        \/\/spUtil.update($scope);\r\n    });\r\n});",
             category: "sp/cs"
         },{
-            title: "",
-            code: "",
-            category: ""
+            title: "Service Portal Angular Events",
+            code: "$rootScope.$on(\'sp.form.record.updated\', function() {\r\n    $scope.data.userForm.data.f._ui_actions[1].is_button = true;\r\n});\r\n\r\n$rootScope.$on(\'data_table.click\', function(event,obj) {\r\n    var link = {};\r\n    link.id = $scope.data.page;\r\n    link.table = obj.table;\r\n    link.sys_id = obj.sys_id;\r\n    $location.search(link);\r\n});\r\n\r\n$scope.$on(\"field.change\", function(evt, parms) { }",
+            category: "client"
         },{
-            title: "",
-            code: "",
-            category: ""
+            title: "Display Choice Label instead of Choice Value",
+            code: "var ritm = new GlideRecord(\"sc_req_item\");\r\nritm.query();\r\nwhile(ritm.next()){\r\n    ...\r\n    reqItem.stage = $sp.getFieldsObject(ritm, \'stage\').stage.display_value;\r\n    ...\r\n}",
+            category: "server"
         },{
-            title: "",
-            code: "",
-            category: ""
+            title: "CatItem API",
+            code: "var catalogItemJS = new sn_sc.CatItem(sc.getUniqueValue());\r\nif (!catalogItemJS.canView())\r\n    continue;\r\nvar catItemDetails = catalogItemJS.getItemSummary();",
+            category: "server"
+        },{
+            title: "CatCategory API",
+            code: "categoryJS = new sn_sc.CatCategory(data.category_id);\r\nif (!categoryJS.canView()) {\r\n    data.error = gs.getMessage(\"You do not have permission to see this category\");\r\n    return;\r\n}",
+            category: "server"
+        },{
+            title: "CatalogSearch API",
+            code: "var items = data.items = [];\r\nvar catalog = $sp.getValue(\'sc_catalog\');\r\nvar sc = new sn_sc.CatalogSearch().search(catalog, data.category_id, \'\', false, options.depth_search);\r\nsc.addQuery(\'sys_class_name\', \'NOT IN\', \'sc_cat_item_wizard\');\r\nif (data.keywords)\r\n    sc.addQuery(\'123TEXTQUERY321\', data.keywords);\r\nsc.orderBy(\'order\');\r\nsc.orderBy(\'name\');\r\nsc.query();",
+            category: "server"
+        },{
+            title: "Recursive Function",
+            code: "var results = [];\r\nvar nestedCategories = [\'898fc5a0db00d74074c99447db9619d8\'];\r\ngetChildren(nestedCategories[0]);\r\nsearchItems();\r\n$sp.logSearch(\'sc_cat_item\', data.q, results.length);\r\nreturn results;\r\n\r\nfunction getChildren(sysID) {\r\n    var gr = new GlideRecord(\'sc_category\');\r\n    gr.addQuery(\'parent\', sysID);\r\n    gr.addActiveQuery();\r\n    gr.query();\r\n    while(gr.next()) {\r\n        var current = gr.sys_id.toString();\r\n        nestedCategories.push(current);\r\n        if(hasChildren(current)) {\r\n            getChildren(current);\r\n        }\r\n    }\r\n}\r\n\r\nfunction hasChildren(sysID) {\r\n    var gr = new GlideRecord(\'sc_category\');\r\n    gr.addQuery(\'parent\', sysID);\r\n    gr.addActiveQuery();\r\n    gr.query();\r\n    if(gr.next()) {\r\n        return true;\r\n    } else {\r\n        return false;\r\n    }\r\n}",
+            category: "server"
         },{
             title: "",
             code: "",

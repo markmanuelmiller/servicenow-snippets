@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-md-8 offset-md-4">
 
-                    <ol>
+                    <!--<ol>
                         <li>Service Portal Snippets</li>
                         <ol>
                             <li>Widget Snippets</li>
@@ -55,7 +55,7 @@
                         </ol>
                     </ol>
                     
-                    <hr/>
+                    <hr/>-->
 
                     <div class="entries language-javascript">
 
@@ -65,9 +65,15 @@
                         </div>
 
 
+                    </div>
+
+            
+                </div>
+            </div>
+        </div>
 
                         
-<!--****************** SERVICE PORTAL SNIPPETS ******************-->
+<!--****************** SERVICE PORTAL SNIPPETS ******************
 <h2>Service Portal Snippets</h2>
 
 <h3>Widget Snippets</h3>
@@ -76,123 +82,17 @@
 <h3>Misc</h3>
 
 
-<hr/>
+<hr/>-->
 
 
-<!--****************** PLATFORM SNIPPETS ******************-->
+<!--****************** PLATFORM SNIPPETS ******************
 <h2>Platform Snippets</h2>
 <h3>Server-Side</h3>
-<h3>Client-Side</h3>
+<h3>Client-Side</h3>-->
 
 
 
-<div class="entry">
-    <p>Service Portal Angular Events</p>
-    <pre class="line-numbers"><code>$rootScope.$on('sp.form.record.updated', function() {
-    $scope.data.userForm.data.f._ui_actions[1].is_button = true;
-    });
-    
-    $rootScope.$on('data_table.click', function(event,obj) {
-    var link = {};
-    link.id = $scope.data.page;
-    link.table = obj.table;
-    link.sys_id = obj.sys_id;
-    $location.search(link);
-    });
-    
-    $scope.$on("field.change", function(evt, parms) { }</code></pre>
-</div>
 
-
-<div class="entry">
-    <p>Display Choice Label instead of Choice Value</p>
-    <pre class="line-numbers"><code>var ritm = new GlideRecord("sc_req_item");
-    ritm.query();
-    while(ritm.next()){
-    ...
-    reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
-    ...
-    }</code></pre>
-</div>
-
-
-
-<div class="entry">
-<p>CatItem API</p>
-<pre class="line-numbers"><code>var catalogItemJS = new sn_sc.CatItem(sc.getUniqueValue());
-if (!catalogItemJS.canView())
-    continue;
-var catItemDetails = catalogItemJS.getItemSummary();</code></pre>
-</div>
-
-<div class="entry">
-<p>CatCategory API</p>
-<pre class="line-numbers"><code>categoryJS = new sn_sc.CatCategory(data.category_id);
-if (!categoryJS.canView()) {
-data.error = gs.getMessage("You do not have permission to see this category");
-return;
-}</code></pre>
-</div>
-
-
-<div class="entry">
-<p>CatalogSearch API</p>
-<pre class="line-numbers"><code>var items = data.items = [];
-var catalog = $sp.getValue('sc_catalog');
-var sc = new sn_sc.CatalogSearch().search(catalog, data.category_id, '', false, options.depth_search);
-sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard');
-if (data.keywords)
-    sc.addQuery('123TEXTQUERY321', data.keywords);
-sc.orderBy('order');
-sc.orderBy('name');
-sc.query();
-</code></pre>
-</div>
-
-<div class="entry">
-<p>Recursive Function</p>
-<pre class="line-numbers"><code>var results = [];
-var nestedCategories = ['898fc5a0db00d74074c99447db9619d8'];
-
-getChildren(nestedCategories[0]);
-searchItems();
-$sp.logSearch('sc_cat_item', data.q, results.length);
-return results;
-
-
-function getChildren(sysID) {
-    var gr = new GlideRecord('sc_category');
-    gr.addQuery('parent', sysID);
-    gr.addActiveQuery();
-    gr.query();
-    while(gr.next()) {
-        var current = gr.sys_id.toString();
-        nestedCategories.push(current);
-        if(hasChildren(current)) {
-            getChildren(current);
-        }
-    }
-}
-
-function hasChildren(sysID) {
-    var gr = new GlideRecord('sc_category');
-    gr.addQuery('parent', sysID);
-    gr.addActiveQuery();
-    gr.query();
-    if(gr.next()) {
-        return true;
-    } else {
-        return false;
-    }
-}</code></pre>
-</div>
-
-            </div>
-
-            
-        </div>
-    </div>
-</div>
         
 
 
