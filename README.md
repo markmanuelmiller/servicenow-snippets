@@ -3,32 +3,32 @@
 ## Table of Contents
 1. [Server-Side](#server-side)
 1. [Client-Side](#client-side)
-1. [Service Portal](#service-portal)
-1. [Background Scripts](#background-scripts)
 1. [Other](#other)
 
 
 ## Server-Side
 
-###### Get display field of a table
+#### Get display field of a table
 ```js
 gr.getDisplayName()
 ```
 
-
-Example:
+---
+#### Example:
 ```js
 var gr = new GlideRecord('incident');
 gr.query();
 gs.print(gr.getDisplayName()); /* number */
 ```
 
-###### Does a variable exist?
+---
+#### Does a variable exist?
 ```js
 if(typeof variableName != 'undefined') { }
 ```
 
-###### Verifying a record is found using `GlideRecord.get`
+---
+#### Verifying a record is found using `GlideRecord.get`
 ```js
 var gr = new GlideRecord(table);
 if(gr.get(sys_id)) {
@@ -40,27 +40,30 @@ if(gr.get(sys_id)) {
 }
 ```
 
-###### Service Catalog - Excluding Class Names
+---
+#### Service Catalog - Excluding Class Names
 ```js
 sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard,sc_cat_item_content');
 ```
 
-###### Don't update system fields
+---
+#### Don't update system fields
 ```js
 gr.autoSysFields(false);
 ```
 
-###### Don't run Business Rules
+---
+#### Don't run Business Rules
 ```js
 gr.setWorkflow(false);
 ```
-
-###### Force update on record
+---
+#### Force update on record
 ```
 gr.forceUpdate(true);
 ```
-
-###### Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow
+---
+#### Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow
 ```js
 var workflow = new Workflow();
 workflow.runFlows('record_sys_id', 'update');
@@ -68,21 +71,15 @@ workflow.runFlows('record_sys_id', 'update');
 
 
 ## Client-Side
-
-
-## Service Portal
-
-### HTML
-###### Iterating over objects while applying a filter
+#### Iterating over objects while applying a filter
 ```html
 <div class="col-md-4 clearfix item-container"
      ng-repeat="item in c.data.items | filter:c.data.term"
      ng-include="data.templateID">
 ```
 
-### Client Controller
-
-###### Attempting to add GlideAjax to a widget Controller
+---
+#### Attempting to add GlideAjax to a widget Controller
 ```js
 c.glideAjax = function() {
 
@@ -99,13 +96,12 @@ c.glideAjax = function() {
 	c.glideAjax();
 ```
 
-
-###### Different Angular Dependencies
+#### Different Angular Dependencies
 ```js
 function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window, $document) { /* code */ })
 ```
 
-Opening a Modal & Passing Scope to `$uibModal`
+#### Opening a Modal & Passing Scope to `$uibModal`
 ```js
 $scope.openLogin = function () {
   $scope.modalInstance = $uibModal.open({
@@ -115,7 +111,8 @@ $scope.openLogin = function () {
 };
 ```
 
-###### Implementing an Angular Template
+#### Implementing an Angular Template
+###### Client Script
 ```js
 function redirectUser(lastLoginDate){
   if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
@@ -127,7 +124,7 @@ function redirectUser(lastLoginDate){
   }
 }
 ```
-
+###### HTML
 ```html
 <script type="text/ng-template" id="welcomeTemplate">
     <div class="panel panel-default">
@@ -145,7 +142,8 @@ function redirectUser(lastLoginDate){
 </script>
 ```
 
-###### Using `$location` to Redirect User
+---
+#### Using `$location` to Redirect User
 ```js
 $scope.closeAndEdit = function() {
   $scope.closeAndSave();
@@ -153,25 +151,26 @@ $scope.closeAndEdit = function() {
 };
 ```
 
-
-### Server Script
-
+---
+#### Stuff
 ```js
 $sp.getFieldsObject();
 ```
 
-###### Get a Widget from the **Portal** Record
+---
+#### Get a Widget from the **Portal** Record
 ```js
 data.typeahead = $sp.getWidgetFromInstance('typeahead-search');
 ```
 
-###### Get Service Portal URL Suffix
+---
+#### Get Service Portal URL Suffix
 ```js
 var url_suffix = $sp.getPortalRecord().getValue('url_suffix');
 ```
 
-
-###### Adding pagination to a widget
+---
+#### Adding pagination to a widget
 ```html
 <!-- footer -->
 <div ng-if="c.numberOfPages() > 1"
@@ -192,11 +191,8 @@ var url_suffix = $sp.getPortalRecord().getValue('url_suffix');
 </div>
 ```
 
-
-
-## Background Scripts
-
-###### Force a record into an update set
+---
+#### Force a record into an update set
 ```js
 var rec = new GlideRecord('table_name_of_record');
 rec.get('sys_id_of_record');
@@ -207,8 +203,7 @@ um.saveRecord(rec);
 
 
 ## Other
-
-###### iFrames in Service Portal and CSS manipulation
+#### iFrames in Service Portal and CSS manipulation
 ```html
 <div class="col-lg-12 col-md-12 page-section">
   <div class="section-head">
@@ -238,10 +233,9 @@ um.saveRecord(rec);
 </script>
 ```
 
-
-###### Calling a Scripted REST API via Service Portal
-
-Scripted REST Resource | POST
+---
+#### Calling a Scripted REST API via Service Portal
+###### Scripted REST Resource | POST
 ```js
 (function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
 	var req = JSON.parse(request.body.dataString);
@@ -259,7 +253,7 @@ Scripted REST Resource | POST
 })(request, response);
 ```
 
-UI Script
+###### UI Script
 ```js
 function testingSomething() {
 	var data = {
@@ -282,8 +276,8 @@ function testingSomething() {
 }
 ```
 
-
-###### Recursive function
+---
+#### Recursive function
 ```js
 var results = [];
 var nestedCategories = ['898fc5a0db00d74074c99447db9619d8'];
@@ -319,8 +313,8 @@ function hasChildren(sysID) {
 }
 ```
 
-
-###### Form field change in Client Script
+---
+#### Form field change in Client Script
 ```js
 $scope.$on('field.change', function(evt, parms) {
 	//if (parms.field.name == c.data.user.name) {
@@ -334,7 +328,8 @@ $scope.$on('field.change', function(evt, parms) {
 });
 ```
 
-###### Service Portal Angular Events
+---
+#### Service Portal Angular Events
 ```js
 $rootScope.$on('sp.form.record.updated', function() {
     $scope.data.userForm.data.f._ui_actions[1].is_button = true;
@@ -351,7 +346,8 @@ $rootScope.$on('data_table.click', function(event,obj) {
 $scope.$on("field.change", function(evt, parms) { }
 ```
 
-###### Display Choice Label instead of Choice Value
+---
+#### Display Choice Label instead of Choice Value
 ```js
 var ritm = new GlideRecord("sc_req_item");
 ritm.query();
@@ -362,7 +358,8 @@ while(ritm.next()){
 }
 ```
 
-###### CatItem API
+---
+#### CatItem API
 ```js
 var catalogItemJS = new sn_sc.CatItem(sc.getUniqueValue());
 if (!catalogItemJS.canView())
@@ -370,7 +367,8 @@ if (!catalogItemJS.canView())
 var catItemDetails = catalogItemJS.getItemSummary();
 ```
 
-###### CatCategory API
+---
+#### CatCategory API
 ```js
 categoryJS = new sn_sc.CatCategory(data.category_id);
 if (!categoryJS.canView()) {
@@ -379,7 +377,8 @@ if (!categoryJS.canView()) {
 }
 ```
 
-###### CatalogSearch API
+---
+#### CatalogSearch API
 ```js
 var items = data.items = [];
 var catalog = $sp.getValue('sc_catalog');
