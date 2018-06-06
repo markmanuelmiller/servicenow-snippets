@@ -12,6 +12,7 @@ Keywords: `ng-template`, `templates`
 
 #### Attempting to add GlideAjax to a widget Controller
 > Don't believe this works. @todo
+
 ```js
 c.glideAjax = function() {
 
@@ -262,6 +263,11 @@ $rootScope.$on('data_table.click', function(event,obj) {
 $scope.$on("field.change", function(evt, parms) { }
 ```
 
+$broadcast
+```js
+$rootScope.$broadcast('kb-filter-change', filters);
+```
+
 ----------------------------------------------------------------------------------------------------------
 #### Display Choice Label instead of Choice Value
 ```js
@@ -332,4 +338,29 @@ function beautifyString(str) {
     return l.toUpperCase()
   });
 }
+```
+
+
+----------------------------------------------------------------------------------------------------------
+
+Displaying select boxes
+```html
+<div class="list-group">
+      <label for="">${Select country}</label>
+      <span class="list-group-item"
+            ng-repeat="country in data.countries">
+        <div class="input-group checkbox-container">
+          <div class="checkbox-grp">
+            <label class="font-light">
+              <input class="m-r-sm"
+                     type="checkbox"
+                     value="{{::country.value}}"
+                     ng-model="country.selected"
+                     ng-change="c.countryChanged(country)" />
+              {{::country.label}}
+            </label>
+          </div>          
+        </div>
+      </span>
+    </div>
 ```

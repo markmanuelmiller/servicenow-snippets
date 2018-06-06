@@ -12,7 +12,7 @@ gr.query();
 gs.print(gr.getDisplayName()); /* number */
 ```
 
----
+----------------------------------------------------------------------------------------------------------
 
 #### Verifying a record is found using `GlideRecord.get`
 ```js
@@ -27,7 +27,7 @@ if(gr.get(sys_id)) {
 ```
 Keywords: `GlideRecord`, `get`
 
----
+----------------------------------------------------------------------------------------------------------
 
 #### Don't update system fields
 ```js
@@ -35,20 +35,21 @@ gr.autoSysFields(false);
 ```
 > Use this when you'd like to prevent ...
 
----
+----------------------------------------------------------------------------------------------------------
 
 #### Don't run Business Rules
 ```js
 gr.setWorkflow(false);
 ```
 
----
+----------------------------------------------------------------------------------------------------------
+
 #### Force update on record
 ```
 gr.forceUpdate(true);
 ```
 
----
+----------------------------------------------------------------------------------------------------------
 
 #### Bump a records' workflow - typically used if making changes to a record and isn't picked up by that records' workflow
 ```js
@@ -56,6 +57,7 @@ var workflow = new Workflow();
 workflow.runFlows('record_sys_id', 'update');
 ```
 
+----------------------------------------------------------------------------------------------------------
 
 ### Other
 #### Does a JavaScript variable exist?
@@ -65,7 +67,7 @@ function someFunction(var1, var2) {
 }
 ```
 
----
+----------------------------------------------------------------------------------------------------------
 
 #### Using gs.nil()
 ```js
