@@ -120,8 +120,8 @@ Keywords: `modal`
 
 ----------------------------------------------------------------------------------------------------------
 
-#### Implementing an Angular Template
-##### Client Script
+### Implementing an Angular Template
+#### Client Script
 ```js
 function redirectUser(lastLoginDate){
   if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
@@ -145,12 +145,8 @@ $scope.closeAndEdit = function() {
 ```
 
 ----------------------------------------------------------------------------------------------------------
-
-
-
-----------------------------------------------------------------------------------------------------------
 ### Calling a Scripted REST API via Service Portal
-##### Scripted REST Resource | POST
+#### Scripted REST Resource | POST
 ```js
 (function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
 	var req = JSON.parse(request.body.dataString);
@@ -168,7 +164,7 @@ $scope.closeAndEdit = function() {
 })(request, response);
 ```
 
-###### UI Script
+#### UI Script
 ```js
 function testingSomething() {
 	var data = {
@@ -192,13 +188,13 @@ function testingSomething() {
 ```
 
 ----------------------------------------------------------------------------------------------------------
-#### Recursive function
+
+### Recursive function
 ```js
 var results = [];
 var nestedCategories = ['898fc5a0db00d74074c99447db9619d8'];
 getChildren(nestedCategories[0]);
 searchItems();
-$sp.logSearch('sc_cat_item', data.q, results.length);
 return results;
 
 function getChildren(sysID) {
@@ -229,7 +225,8 @@ function hasChildren(sysID) {
 ```
 
 ----------------------------------------------------------------------------------------------------------
-#### Form field change in Client Script
+
+### Form field change in Client Script
 ```js
 $scope.$on('field.change', function(evt, parms) {
 	//if (parms.field.name == c.data.user.name) {
@@ -243,10 +240,9 @@ $scope.$on('field.change', function(evt, parms) {
 });
 ```
 
-
-
 ----------------------------------------------------------------------------------------------------------
-#### Display Choice Label instead of Choice Value
+
+### Display Choice Label instead of Choice Value
 ```js
 var ritm = new GlideRecord("sc_req_item");
 ritm.query();
@@ -258,7 +254,8 @@ while(ritm.next()){
 ```
 
 ----------------------------------------------------------------------------------------------------------
-#### CatItem API
+
+### CatItem API
 ```js
 var catalogItemJS = new sn_sc.CatItem(sc.getUniqueValue());
 if (!catalogItemJS.canView())
@@ -267,7 +264,8 @@ var catItemDetails = catalogItemJS.getItemSummary();
 ```
 
 ----------------------------------------------------------------------------------------------------------
-#### CatCategory API
+
+### CatCategory API
 ```js
 categoryJS = new sn_sc.CatCategory(data.category_id);
 if (!categoryJS.canView()) {
@@ -278,7 +276,7 @@ if (!categoryJS.canView()) {
 
 ----------------------------------------------------------------------------------------------------------
 
-#### CatalogSearch API
+### CatalogSearch API
 ```js
 var items = data.items = [];
 var catalog = $sp.getValue('sc_catalog');
