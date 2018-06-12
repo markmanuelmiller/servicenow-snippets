@@ -1,15 +1,11 @@
 # ServiceNow Snippets
 
 ## Table of Contents
-@todo fix ToC
-1. [Server-Side](docs/server_side.md)
-1. [Client-Side](docs/client_side.md)
-1. [Both](docs/both.md)
-
+@todo fix ToC, not sure about JavaScript snippets and Misc
 1. [Service Portal](docs/service_portal.md)
-
 1. [JavaScript Snippets](docs/javascript.md)
 1. [HTML Snippets](docs/html_snippets.md)
+1. [SASS Variables](docs/sass_variables.md)
 1. [Misc](docs/misc.md)
 
 ## Template
@@ -153,3 +149,22 @@ sc.query();
 ```
 
 ----------------------------------------------------------------------------------------------------------
+
+### Get Days Ago
+```js
+_checkDaysAgo: function (date) {
+		//take date to find today, yesterday, etc.
+	    var now = gs.now() + ' 12:00:00';
+	    date = date.substring(0, 10) + ' 12:00:00';
+
+	    var nowDT = new GlideDateTime();
+	    nowDT.setDisplayValue(now);
+	    var dateDT = new GlideDateTime();
+	    dateDT.setDisplayValue(date);
+	    var seconds = gs.dateDiff(dateDT.getDisplayValue(), nowDT.getDisplayValue(), true);
+
+	    var days = seconds / 60 / 60 / 24;
+
+	    return days;
+	}
+```

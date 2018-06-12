@@ -275,4 +275,101 @@ reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
 ...
 ```
 
+----------------------------------------------------------------------------------------------------------
 
+### Iterating over objects while applying a filter
+```html
+<div class="col-md-4 clearfix item-container"
+     ng-repeat="item in c.data.items | filter:c.data.term"
+     ng-include="data.templateID">
+```
+
+----------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------
+
+## Other
+### iFrames in Service Portal and CSS manipulation
+```html
+<div class="col-lg-12 col-md-12 page-section">
+  <div class="section-head">
+      UPDATE SECURITY QUESTIONS
+    </div>
+  <div class="frosted">
+  	<iframe id="enrollChange" src="$pwd_enrollment_form_container.do" class="i-frame2" scrolling="no"></iframe>
+  </div>
+</div>
+<script>
+   $('#enrollChange').on('load', function() {
+          $(this).contents().find('.navbar').css({
+              'border': 'none',
+              'background': 'transparent',
+              'box-shadow': 'none',
+              'margin-left': '20px',
+              'margin-right': '20px'
+          });
+		
+          $(this).contents().find('.navbar-btn').css({
+              'display': 'none',
+          });  
+    		  $(this).contents().find('.nav-tabs > li.active').css({
+              'border-top-color': 'rgb(86, 117, 141)',
+          });         
+    });   
+</script>
+```
+
+----------------------------------------------------------------------------------------------------------
+
+### Remove underscores and capitalize each word in a string
+Typically used to display the value of a stage on sc_request items
+
+```js
+function beautifyString(str) {
+  return str.replace(/_/g, ' ').replace(/\b\w/g, function(l) {
+    return l.toUpperCase()
+  });
+}
+```
+
+----------------------------------------------------------------------------------------------------------
+
+### Displaying select boxes
+```html
+<div class="list-group">
+      <label for="">${Select country}</label>
+      <span class="list-group-item"
+            ng-repeat="country in data.countries">
+        <div class="input-group checkbox-container">
+          <div class="checkbox-grp">
+            <label class="font-light">
+              <input class="m-r-sm"
+                     type="checkbox"
+                     value="{{::country.value}}"
+                     ng-model="country.selected"
+                     ng-change="c.countryChanged(country)" />
+              {{::country.label}}
+            </label>
+          </div>          
+        </div>
+      </span>
+    </div>
+```
