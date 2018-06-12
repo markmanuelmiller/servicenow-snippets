@@ -1,111 +1,226 @@
+[Services Examples](docs/examples/services.md)
+
 # Service Portal Snippets
 
+## All
 
-## Snippets
-
-### Using `$http` in Client Script
-```js
-function($http) {
-    var c = this;
-    var countExpressions = c.options.count_expressions.split(";");
-    c.counters = [];
-    for(var i=0;i<=countExpressions.length-1;i++) {
-        var parts = countExpressions[i].split(",");
-        var counter = makeCounter(parts[0], parts[1]);
-        runCounter(counter);
-        c.counters.push(counter);
-    }
-
-    function runCounter(counter) {
-        var url = "/api/now/stats/"+ c.options.table +"?sysparm_query="+ counter.filter +"&sysparm_count=true";
-        $http.get(url).then(function(response) {
-            counter.count = response.data.result.stats.count;
-        });
-    }
-
-    function makeCounter(label, filter) {
-        return {label: label, filter: filter, count: 0};
-    }
-}
-```
-> This snippet leverages the `$http` Service to call the backend of ServiceNow
+### Exploring Client/Server Relationship
 
 ----------------------------------------------------------------------------------------------------------
 
+### Calling Server From Client
+There are a number of ways to call server-side code from the client in Service Portal
 
-### Services in Service Portal
-This specific widget is found in the CreatorCon class **Advanced Widget Development**
+#### 1) `c.server.update()`
 
-###### Service (Angular Provider)
+
+#### 2) `$http` Service
+
+##### a) Processor
+###### Service
 ```js
-function(amb) {
-	var watcher;
-	var dataUpdatedHandlers = [];
-	function init(table, filter) {
-		if (watcher) {
-			watcher.unsubscribe();
-		}
-
-		if (table && filter) {
-			var watcherChannel = amb.getChannelRW(table, filter);
-			amb.connect();
-			watcher = watcherChannel.subscribe(function(message) {
-				if (!message.data) {
-					return;
-				}
-				dataUpdatedHandlers.forEach(function(fn) { fn.call(fn); });
-			});
-		}
-	}
-	return {
-		onDataUpdated: function(callbackFn) {
-			dataUpdatedHandlers.push(callbackFn);
-		},
-		initRecordWatcher: function(table, filter) {
-			init(table, filter);
-		}
-	};
-}
+function RPService($http) {
+    return {
+        //...
+        getResourceChartData: function(chartType, chartSubType, heatmapGroupType, timeScale, selectedPlans, reportingUnit) {
+            return $http({
+                url: '/resource_management_processor.do',
+                method: 'get',
+                params: {
+                    sysparm_name: 'getChartData',
+                    sysparm_processor: 'ResourcePortalService',
+                    sysparm_chart_type: chartType,
+                    sysparm_chart_sub_type: chartSubType,
+                    sysparm_heat_map_group_type: heatmapGroupType,
+                    sysparm_time_scale: timeScale,
+					sysparm_reporting_unit: reportingUnit,
+                    sysparm_include_plans: selectedPlans.join(',')
+                }
+            });
+        },
 ```
 
-###### Client Script of Widget
+###### Processor
+*Path*: `resource_management_processor`
+
 ```js
-function($scope, angularServiceName) {
-    workspaceData.initRecordWatcher(c.options.table, c.options.filter);
-    workspaceData.onDataUpdated(function() {
-        c.data.rows = [];
-        c.server.update().then(function(data){
-            c.data.rows = data.rows;
+var response = "";
+var processorParm = g_request.getParameter('sysparm_processor');
+if( processorParm == "ResourceWorkbenchService" ||
+	processorParm == "ResourcePortalService" ||
+	processorParm == "RMChartExportService" ||
+    processorParm == "RMPPSWorkbenchService" ||
+	processorParm == "ResourceReportService") {
+		var processor=new this[g_request.getParameter('sysparm_processor')](g_request);
+		response=processor[g_request.getParameter('sysparm_name')]();
+}
+else {
+	response = {error: gs.getMessage('Access denied for this method')};
+}
+
+g_processor.writeOutput("application/json", response);
+```
+
+##### b) URL
+Example 1:
+```js
+function($http) {
+    // ...
+    function runCounter(counter) {
+        var url = "/api/now/stats/"+ c.options.table +"?sysparm_query="+ counter.filter +"&sysparm_count=true";
+        $http.get(url).then(function(response) {
+            // ...
         });
-    });
+    }
 }
 ```
 
-> This snippet demonstrates using an Angular Service in the Client Script of a Widget
+Example 2:
+```js
+function NRRPService($http) {
+    return {
+        getPlans: function(encodedQuery, maxPlans) {
+            if (!maxPlans)
+                maxPlans = 50;
+            var fields = 'sysparm_fields=number%2Csys_id%2Cgroup_resource%2Cresource_type%2Cuser_resource%2Cplan_type%2Coperational_work_type%2Ctask%2Cman_days%2Cfte%2Cplanned_hours%2Cstate%2Cshort_description%2Ctask.priority%2Ctask.short_description%2Ctask.sys_class_name';
+            var url = '/api/now/table/resource_plan?' + fields + '&sysparm_limit=' + maxPlans + '&sysparm_display_value=all&sysparm_exclude_reference_link=true&sysparm_query=' + encodedQuery + '^ORDERBYtask.priority';
+            return $http.get(url);
+        },
+    // ...
+```
+
+
+#### 3) UI Script & Scripted REST
+###### Scripted REST Resource
+*Type*: POST
+```js
+(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+	var req = JSON.parse(request.body.dataString);
+	var activity = req.tour;
+	if(activity) {
+		new x_nero_gamificatio.GamificationAPI().trackRecordActivity(gs.getUserID(), activity);
+		return {
+			tour: req.tour
+		};
+	} else {
+		// ...
+	}
+})(request, response);
+```
+
+###### UI Script
+```js
+function testingSomething() {
+	var data = {
+		tour: 'ACT1008'
+	};
+	$.ajax({
+		type: 'POST',
+		url: '/api/x_nero_gamificatio/guided_tour_api',
+		contentType: 'application/json',
+		data: JSON.stringify(data)
+	}).done(function(response) {
+		// done
+	})
+	.fail(function() {
+        // fail
+	});
+}
+```
 
 ----------------------------------------------------------------------------------------------------------
 
 
 ### Embedding Widgets
 
-a) Via HTML
+#### 1) Via HTML
 
 
-b) Via Client Script
+#### 2) Via Client Script
 
 
-c) Via Server Script
+#### 3) Via Server Script
+
 
 ----------------------------------------------------------------------------------------------------------
 
-
-### Use this to grab the display fields of a choice field
+@todo
+### Events
 ```js
-$sp.getFieldsObject();
+$rootScope.$on('sp.form.record.updated', function() {
+    $scope.data.userForm.data.f._ui_actions[1].is_button = true;
+});
+
+$rootScope.$on('data_table.click', function(event,obj) {
+    var link = {};
+    link.id = $scope.data.page;
+    link.table = obj.table;
+    link.sys_id = obj.sys_id;
+    $location.search(link);
+});
+
+$scope.$on("field.change", function(evt, parms) { }
 ```
-> Example of this is grabbing the display values of the stages on an sc_request record
 
 ----------------------------------------------------------------------------------------------------------
+@todo
+### Implementing an Angular Template
+###### Client Script
+```js
+function redirectUser(lastLoginDate){
+  if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
+    $scope.modalInstance = $uibModal.open({
+      templateUrl: 'welcomeTemplate',
+      windowClass: 'welcome-pref-modal',
+      scope: $scope
+    });
+  }
+}
+```
+
+----------------------------------------------------------------------------------------------------------
+@todo
+### Using `$location` to Redirect User
+```js
+$scope.closeAndEdit = function() {
+  $scope.closeAndSave();
+  $location.url('?id=user_profile');
+};
+```
+
+----------------------------------------------------------------------------------------------------------
+
+### Form field change in Client Script
+```js
+$scope.$on('field.change', function(evt, parms) {
+	//if (parms.field.name == c.data.user.name) {
+	if (parms.oldValue == c.data.user.sys_id) {
+		c.data.setLocation = parms.newValue;
+	}
+    c.data.currentUser = parms.newValue;
+    c.server.update().then(function(response) {
+        //spUtil.update($scope);
+    });
+});
+```
+
+----------------------------------------------------------------------------------------------------------
+
+### Capturing Data Table Click Event
+```js
+$rootScope.$on('data_table.click', function(a, b) {
+    if(b.table === 'dmn_demand') {
+        // go to
+        window.location.href = '?id=psp_demand_record&sys_id=' + b.sys_id;
+    }
+});
+```
+> Use this snippet to capture the click event on a data table and redirect the user to a custom page
+
+
+----------------------------------------------------------------------------------------------------------
+
+## Misc
 
 ### Get a Widget from the **Portal** Record
 ```js
@@ -144,169 +259,13 @@ SN Specific:
 - spUtil
 - $uibModal
 - cabrillo
+- amb?
 
 Angular:
 - $location
 
 ----------------------------------------------------------------------------------------------------------
 
-### Service Portal Angular Events
-```js
-$rootScope.$on('sp.form.record.updated', function() {
-    $scope.data.userForm.data.f._ui_actions[1].is_button = true;
-});
-
-$rootScope.$on('data_table.click', function(event,obj) {
-    var link = {};
-    link.id = $scope.data.page;
-    link.table = obj.table;
-    link.sys_id = obj.sys_id;
-    $location.search(link);
-});
-
-$scope.$on("field.change", function(evt, parms) { }
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Implementing an Angular Template
-#### Client Script
-```js
-function redirectUser(lastLoginDate){
-  if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
-    $scope.modalInstance = $uibModal.open({
-      templateUrl: 'welcomeTemplate',
-      windowClass: 'welcome-pref-modal',
-      scope: $scope
-    });
-  }
-}
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Using `$location` to Redirect User
-```js
-$scope.closeAndEdit = function() {
-  $scope.closeAndSave();
-  $location.url('?id=user_profile');
-};
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Calling a Scripted REST API via Service Portal
-#### Scripted REST Resource | POST
-```js
-(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
-	var req = JSON.parse(request.body.dataString);
-	var activity = req.tour;
-	if(activity) {
-		new x_nero_gamificatio.GamificationAPI().trackRecordActivity(gs.getUserID(), activity);
-		return {
-			tour: req.tour
-		};
-	} else {
-		return {
-			tour: 'Error'
-		};
-	}
-})(request, response);
-```
-
-#### UI Script
-```js
-function testingSomething() {
-	var data = {
-		tour: 'ACT1008'
-	};
-
-	$.ajax({
-		type: 'POST',
-		url: '/api/x_nero_gamificatio/guided_tour_api',
-		contentType: 'application/json',
-		data: JSON.stringify(data)
-
-	}).done(function(response) {
-		console.log('done');
-		console.log(response);
-	})
-	.fail(function() {
-		console.log('fail');
-	});
-}
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Form field change in Client Script
-```js
-$scope.$on('field.change', function(evt, parms) {
-	//if (parms.field.name == c.data.user.name) {
-	if (parms.oldValue == c.data.user.sys_id) {
-		c.data.setLocation = parms.newValue;
-	}
-    c.data.currentUser = parms.newValue;
-    c.server.update().then(function(response) {
-        //spUtil.update($scope);
-    });
-});
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Display Choice Label instead of Choice Value
-```js
-var ritm = new GlideRecord("sc_req_item");
-ritm.query();
-while(ritm.next()){
-    ...
-    reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
-    ...
-}
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Get Display Values of a Choice field
-```js
-...
-reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
-...
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Iterating over objects while applying a filter
-```html
-<div class="col-md-4 clearfix item-container"
-     ng-repeat="item in c.data.items | filter:c.data.term"
-     ng-include="data.templateID">
-```
-
-----------------------------------------------------------------------------------------------------------
-
-
-
-----------------------------------------------------------------------------------------------------------
-
-
-
-----------------------------------------------------------------------------------------------------------
-
-
-
-----------------------------------------------------------------------------------------------------------
-
-
-
-----------------------------------------------------------------------------------------------------------
-
-
-
-----------------------------------------------------------------------------------------------------------
-
-## Other
 ### iFrames in Service Portal and CSS manipulation
 ```html
 <div class="col-lg-12 col-md-12 page-section">
@@ -339,19 +298,6 @@ reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
 
 ----------------------------------------------------------------------------------------------------------
 
-### Remove underscores and capitalize each word in a string
-Typically used to display the value of a stage on sc_request items
-
-```js
-function beautifyString(str) {
-  return str.replace(/_/g, ' ').replace(/\b\w/g, function(l) {
-    return l.toUpperCase()
-  });
-}
-```
-
-----------------------------------------------------------------------------------------------------------
-
 ### Displaying select boxes
 ```html
 <div class="list-group">
@@ -372,4 +318,26 @@ function beautifyString(str) {
         </div>
       </span>
     </div>
+```
+
+----------------------------------------------------------------------------------------------------------
+
+### Iterating over objects while applying a filter
+```html
+<div class="col-md-4 clearfix item-container"
+     ng-repeat="item in c.data.items | filter:c.data.term"
+     ng-include="data.templateID">
+```
+
+----------------------------------------------------------------------------------------------------------
+
+### Display Choice Label instead of Choice Value
+```js
+var ritm = new GlideRecord("sc_req_item");
+ritm.query();
+while(ritm.next()){
+    ...
+    reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
+    ...
+}
 ```
