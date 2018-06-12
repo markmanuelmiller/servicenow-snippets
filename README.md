@@ -1,6 +1,7 @@
 # ServiceNow Snippets
 
 ## Table of Contents
+@todo fix ToC
 1. [Server-Side](docs/server_side.md)
 1. [Client-Side](docs/client_side.md)
 1. [Both](docs/both.md)
@@ -15,29 +16,24 @@
 
 ----------------------------------------------------------------------------------------------------------
 ### Snippet Title
+Description
+
+###### [Script Location]
 ```js
 // code
 ```
+
+###### [Script Location]
+```js
+// code
+```
+
 > Notes on the snippet
 
 ----------------------------------------------------------------------------------------------------------
 
 
-
 ## Snippets
-
-### Embedding Widgets
-
-a) Via HTML
-
-
-b) Via Client Script
-
-
-c) Via Server Script
-
-
-----------------------------------------------------------------------------------------------------------
 
 ### Verifying JavaScript Parameters
 ```js
@@ -85,110 +81,6 @@ um.saveRecord(rec);
 
 ----------------------------------------------------------------------------------------------------------
 
-### Use this to grab the display fields of a choice field
-```js
-$sp.getFieldsObject();
-```
-> Example of this is grabbing the display values of the stages on an sc_request record
-
-----------------------------------------------------------------------------------------------------------
-
-### Get a Widget from the **Portal** Record
-```js
-data.typeahead = $sp.getWidgetFromInstance('typeahead-search');
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Get Service Portal URL Suffix
-```js
-var url_suffix = $sp.getPortalRecord().getValue('url_suffix');
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Opening a Modal & Passing Scope to `$uibModal`
-```js
-$scope.openLogin = function () {
-  $scope.modalInstance = $uibModal.open({
-    templateUrl: 'modalLogin',
-    scope: $scope
-  });
-};
-```
-Keywords: `modal`
-
-----------------------------------------------------------------------------------------------------------
-
-### Implementing an Angular Template
-#### Client Script
-```js
-function redirectUser(lastLoginDate){
-  if(lastLoginDate == '' || lastLoginDate == null || lastLoginDate == 'undefined'){
-    $scope.modalInstance = $uibModal.open({
-      templateUrl: 'welcomeTemplate',
-      windowClass: 'welcome-pref-modal',
-      scope: $scope
-    });
-  }
-}
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Using `$location` to Redirect User
-```js
-$scope.closeAndEdit = function() {
-  $scope.closeAndSave();
-  $location.url('?id=user_profile');
-};
-```
-
-----------------------------------------------------------------------------------------------------------
-### Calling a Scripted REST API via Service Portal
-#### Scripted REST Resource | POST
-```js
-(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
-	var req = JSON.parse(request.body.dataString);
-	var activity = req.tour;
-	if(activity) {
-		new x_nero_gamificatio.GamificationAPI().trackRecordActivity(gs.getUserID(), activity);
-		return {
-			tour: req.tour
-		};
-	} else {
-		return {
-			tour: 'Error'
-		};
-	}
-})(request, response);
-```
-
-#### UI Script
-```js
-function testingSomething() {
-	var data = {
-		tour: 'ACT1008'
-	};
-
-	$.ajax({
-		type: 'POST',
-		url: '/api/x_nero_gamificatio/guided_tour_api',
-		contentType: 'application/json',
-		data: JSON.stringify(data)
-
-	}).done(function(response) {
-		console.log('done');
-		console.log(response);
-	})
-	.fail(function() {
-		console.log('fail');
-	});
-}
-```
-
-----------------------------------------------------------------------------------------------------------
-
 ### Recursive function
 ```js
 var results = [];
@@ -226,35 +118,6 @@ function hasChildren(sysID) {
 
 ----------------------------------------------------------------------------------------------------------
 
-### Form field change in Client Script
-```js
-$scope.$on('field.change', function(evt, parms) {
-	//if (parms.field.name == c.data.user.name) {
-	if (parms.oldValue == c.data.user.sys_id) {
-		c.data.setLocation = parms.newValue;
-	}
-    c.data.currentUser = parms.newValue;
-    c.server.update().then(function(response) {
-        //spUtil.update($scope);
-    });
-});
-```
-
-----------------------------------------------------------------------------------------------------------
-
-### Display Choice Label instead of Choice Value
-```js
-var ritm = new GlideRecord("sc_req_item");
-ritm.query();
-while(ritm.next()){
-    ...
-    reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
-    ...
-}
-```
-
-----------------------------------------------------------------------------------------------------------
-
 ### CatItem API
 ```js
 var catalogItemJS = new sn_sc.CatItem(sc.getUniqueValue());
@@ -287,15 +150,6 @@ if (data.keywords)
 sc.orderBy('order');
 sc.orderBy('name');
 sc.query();
-```
-
-----------------------------------------------------------------------------------------------------------
-
-Get Display Values of a Choice field
-```js
-...
-reqItem.stage = $sp.getFieldsObject(ritm, 'stage').stage.display_value;
-...
 ```
 
 ----------------------------------------------------------------------------------------------------------
