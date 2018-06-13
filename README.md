@@ -7,6 +7,7 @@
 1. [HTML Snippets](docs/html_snippets.md)
 1. [SASS Variables](docs/sass_variables.md)
 1. [Misc](docs/misc.md)
+1. [Components](docs/components/components.md)
 
 ## Template
 
@@ -30,15 +31,6 @@ Description
 
 
 ## Snippets
-
-### Verifying JavaScript Parameters
-```js
-function someFunction(parm1, parm2, parm3) {
-    if(typeof parm1 === 'undefined') {
-        // parm1 does not exist
-    }
-}
-```
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -153,18 +145,18 @@ sc.query();
 ### Get Days Ago
 ```js
 _checkDaysAgo: function (date) {
-		//take date to find today, yesterday, etc.
-	    var now = gs.now() + ' 12:00:00';
-	    date = date.substring(0, 10) + ' 12:00:00';
+    //take date to find today, yesterday, etc.
+    var now = gs.now() + ' 12:00:00';
+    date = date.substring(0, 10) + ' 12:00:00';
 
-	    var nowDT = new GlideDateTime();
-	    nowDT.setDisplayValue(now);
-	    var dateDT = new GlideDateTime();
-	    dateDT.setDisplayValue(date);
-	    var seconds = gs.dateDiff(dateDT.getDisplayValue(), nowDT.getDisplayValue(), true);
+    var nowDT = new GlideDateTime();
+    nowDT.setDisplayValue(now);
+    var dateDT = new GlideDateTime();
+    dateDT.setDisplayValue(date);
+    var seconds = gs.dateDiff(dateDT.getDisplayValue(), nowDT.getDisplayValue(), true);
 
-	    var days = seconds / 60 / 60 / 24;
+    var days = seconds / 60 / 60 / 24;
 
-	    return days;
-	}
+    return days;
+}
 ```

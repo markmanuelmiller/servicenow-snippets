@@ -10,6 +10,22 @@
 
 ### Exploring Client/Server Relationship
 
+###### Server Script
+```js
+(function() {
+    // will run this every time client runs c.server.update()
+    data.someVar;
+
+    // will run this once per session
+    if(!input) {
+
+    } else if(input.action == 'someAction') {
+
+    }
+
+})();
+```
+
 ----------------------------------------------------------------------------------------------------------
 
 ### Calling Server From Client
@@ -193,7 +209,7 @@ $scope.closeAndEdit = function() {
 ```
 
 ----------------------------------------------------------------------------------------------------------
-
+@todo
 ### Form field change in Client Script
 ```js
 $scope.$on('field.change', function(evt, parms) {
@@ -209,7 +225,7 @@ $scope.$on('field.change', function(evt, parms) {
 ```
 
 ----------------------------------------------------------------------------------------------------------
-
+@todo
 ### Capturing Data Table Click Event
 ```js
 $rootScope.$on('data_table.click', function(a, b) {
@@ -224,8 +240,49 @@ $rootScope.$on('data_table.click', function(a, b) {
 
 ----------------------------------------------------------------------------------------------------------
 
+### Invoking REST Call from Server Script
+```js
+var r = new RESTMessage('Yahoo Finance', 'get');
+r.setStringParameter('symbol', data.stock);
+var response = r.execute();
+data.price = response.getBody();
+```
 
+----------------------------------------------------------------------------------------------------------
 
+### Using SWAL
+###### Client Controller
+```js
+if(checkFields()) {
+    swal({
+        title: "Are you sure?",
+        text: "This process will create translated text records for " + configString,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+    })
+    .then(function(willDelete) {
+        if (willDelete) {
+            c.toggleLoading(true);
+            c.data.action = 'generateTranslations';
+            c.server.update().then(function() {
+                c.toggleLoading(false);
+                c.generated = true;
+                c.clearFields();
+                swal("Translated text records have been created. View the log below.", {
+                    icon: "success"
+                });
+            });
+        } 
+    });
+} else {
+    swal("Missing fields", "Please fill out the required fields.", "error");
+}
+```
+
+----------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------
 
 
 ## Misc
@@ -349,3 +406,21 @@ while(ritm.next()){
     ...
 }
 ```
+
+----------------------------------------------------------------------------------------------------------
+
+### Using `$interval` Service
+```js
+function($interval) {
+	var c = this;
+	$interval(function () {
+		c.server.refresh();
+	}, 30000);  
+}
+```
+
+----------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------
