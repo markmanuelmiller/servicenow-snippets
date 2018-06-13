@@ -1,6 +1,10 @@
-[Services Examples](docs/examples/services.md)
-
 # Service Portal Snippets
+
+## Contents
+- [Services Examples](docs/examples/services.md)
+- [All](#all)
+- [Misc](#misc)
+
 
 ## All
 
@@ -219,6 +223,10 @@ $rootScope.$on('data_table.click', function(a, b) {
 
 
 ----------------------------------------------------------------------------------------------------------
+
+
+
+
 
 ## Misc
 
