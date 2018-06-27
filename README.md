@@ -160,3 +160,27 @@ _checkDaysAgo: function (date) {
     return days;
 }
 ```
+
+---
+
+### Working with GlideRecord.getRefRecord()
+@todo - found in nr-fav-panel-list widget
+```js
+var articleRef = gr.u_knowledge_article.getRefRecord();
+item.title = articleRef.getDisplayValue('short_description') + " (" + gr.getDisplayValue('u_knowledge_article') + ")";
+```
+
+
+---
+
+### Working with Dates
+
+
+#### Comparing if a Date is Less Than Current Date
+```js
+var date = new GlideDateTime(date_field);
+var now = new GlideDateTime();
+if(date <= now) {
+    // date is in the past
+}
+```

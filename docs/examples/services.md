@@ -78,3 +78,31 @@ function($http) {
     }
 }
 ```
+
+---
+
+@TODO
+### Using `spNavStateManager` Service
+Found in **Date Table** widget
+```js
+
+
+```
+
+---
+
+@TODO
+```js
+$scope.ignoreLocationChange = true;
+```
+
+---
+
+@TODO
+Found in **Data Table**
+```js
+$scope.$on('widget-filter-breadcrumbs.queryModified', function(e, newFilter){
+    $scope.data.filter = newFilter;
+    $scope.setSearch(true);
+});
+```
