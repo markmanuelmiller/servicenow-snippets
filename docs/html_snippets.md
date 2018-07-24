@@ -3,6 +3,41 @@
 
 ----------------------------------------------------------------------------------------------------------
 
+### Record Picker
+@todo clean up
+
+###### HTML
+```html
+<form class="form-horizontal"
+      id="translatedText">
+    <div class="form-group row">
+        <label for="catalog" 
+                class="col-md-4 control-label">Select the Service Catalog</label>
+        <div class="col-md-8">
+            <sn-record-picker id="catalog" 
+                              field="c.data.someVariable" 
+                              table="'table_name'" 
+                              display-field="'field_name'" 
+                              value-field="'sys_id'"
+                              multiple="true">
+            </sn-record-picker>
+        </div>
+    </div>
+</form>
+```
+
+###### Server Script
+```js
+if(input && input.action == 'generateTranslations') {
+    var o = {
+        catalog: input.someVariable.value,
+    }
+    data.logs = api2.generateTranslationRecords(o);
+}
+```
+
+---
+
 ### HTML
 ```html
 <script type="text/ng-template" id="welcomeTemplate">

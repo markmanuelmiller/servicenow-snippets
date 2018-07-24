@@ -6,6 +6,7 @@
 1. [JavaScript Snippets](docs/javascript.md)
 1. [HTML Snippets](docs/html_snippets.md)
 1. [SASS Variables](docs/sass_variables.md)
+1. [CSS](docs/css.md)
 1. [Misc](docs/misc.md)
 1. [Components](docs/components/components.md)
 

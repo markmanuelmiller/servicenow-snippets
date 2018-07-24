@@ -437,4 +437,21 @@ c.server.update().then(function() {
 ----------------------------------------------------------------------------------------------------------
 
 ### spNavStateManager
+
 ----------------------------------------------------------------------------------------------------------
+
+### Opening Data Table Records in New Tabs
+One solution is as follows... Clone widget and change the following lines
+
+```js
+$scope.$emit(eventNames.click, parms);
+```
+
+to
+
+```js
+window.open( "/portal_id?id=page_id&table="+parms.table+"&sys_id="+ parms.sys_id,"_blank");
+```
+
+---
+
