@@ -160,13 +160,25 @@ function testingSomething() {
 ### Embedding Widgets
 
 #### 1) Via HTML
+```html
+<widget id="widget-cool-clock"></widget>
 
+<widget id="widget-cool-clock" options='{"zone": "America/Los_Angeles","title": "San Diego, CA"}'><widget>
+
+<widget id=""></widget>
+```
 
 #### 2) Via Client Script
 
 
 #### 3) Via Server Script
+```html
+<sp-widget widget="widget-id"></sp-widget>
+```
 
+```js
+$sp.getWidget("widget-cool-clock", options[i])
+```
 
 ----------------------------------------------------------------------------------------------------------
 
