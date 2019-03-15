@@ -1,6 +1,17 @@
 # General JavaScript Snippets
 
 
+
+## Check Existence of Function Parameters
+```js
+function someFunction(parm1, parm2, parm3) {
+    if (typeof parm1 !== 'undefined') {
+        // parm1 exists
+    }
+}
+```
+> This is recommended over `if(parm1 !== undefined){}`
+
 ----------------------------------------------------------------------------------------------------------
 
 ```js

@@ -1,5 +1,12 @@
 ### Misc
 
+
+```js
+var clGenerator = new GlideChoiceList();
+var choiceListQuantity = clGenerator.getChoiceList("sc_cart_item", "quantity");
+```
+
+
 ----------------------------------------------------------------------------------------------------------
 ### Get display field of a table
 ```js

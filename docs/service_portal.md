@@ -467,3 +467,49 @@ window.open( "/portal_id?id=page_id&table="+parms.table+"&sys_id="+ parms.sys_id
 
 ---
 
+### Service Catalog - Manipulating Variables on Client Side
+Grab values from service catalog form view
+
+#### Client Script
+```js
+var syllabus = {
+    instructorLastName: '',
+    semesterTerm: '',
+    courseDepartment: '',
+    courseNumber: '',
+    courseSection: ''
+};
+
+$rootScope.syllabusName = '';
+
+
+// Instructor Last Name
+$scope.$watch('c.widget.data.sc_cat_item._fields["IO:f39518cadbe9d344763e776baf961955"].displayValue', function(newValue, oldValue) {
+    $scope.calculateName('instructorLastName', newValue);
+});
+
+// Semester Term
+$scope.$watch('c.widget.data.sc_cat_item._fields["IO:d8e59c06dbe9d344763e776baf961981"].displayValue', function(newValue, oldValue) {
+    $scope.calculateName('semesterTerm', newValue);
+});
+
+// Course Department
+$scope.$watch('c.widget.data.sc_cat_item._fields["IO:e8d7dccedbe9d344763e776baf96193a"].displayValue', function(newValue, oldValue) {
+    $scope.calculateName('courseDepartment', newValue);
+});
+
+// Course Number
+$scope.$watch('c.widget.data.sc_cat_item._fields["IO:70ee5c06db6dd344763e776baf9619b1"].displayValue', function(newValue, oldValue) {
+    $scope.calculateName('courseNumber', newValue);
+});
+
+// Course Section
+$scope.$watch('c.widget.data.sc_cat_item._fields["IO:1d52644adb2dd344763e776baf961996"].displayValue', function(newValue, oldValue) {
+    $scope.calculateName('courseSection', newValue);
+});
+
+$scope.calculateName = function(name, value) {
+    syllabus[name] = value;
+    $rootScope.syllabusName = syllabus.courseDepartment + syllabus.courseNumber + '-' + syllabus.courseSection + ' (' + syllabus.instructorLastName + ') ' + syllabus.semesterTerm;
+}
+```
