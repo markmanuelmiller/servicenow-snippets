@@ -26,7 +26,7 @@
 })();
 ```
 
-----------------------------------------------------------------------------------------------------------
+----
 
 ### Calling Server From Client
 There are a number of ways to call server-side code from the client in Service Portal
@@ -216,7 +216,8 @@ function redirectUser(lastLoginDate){
 }
 ```
 
-----------------------------------------------------------------------------------------------------------
+-----
+
 @todo
 ### Using `$location` to Redirect User
 ```js
@@ -226,7 +227,8 @@ $scope.closeAndEdit = function() {
 };
 ```
 
-----------------------------------------------------------------------------------------------------------
+----
+
 @todo
 ### Form field change in Client Script
 ```js
@@ -242,7 +244,8 @@ $scope.$on('field.change', function(evt, parms) {
 });
 ```
 
-----------------------------------------------------------------------------------------------------------
+----
+
 @todo
 ### Capturing Data Table Click Event
 ```js
@@ -256,7 +259,7 @@ $rootScope.$on('data_table.click', function(a, b) {
 > Use this snippet to capture the click event on a data table and redirect the user to a custom page
 
 
-----------------------------------------------------------------------------------------------------------
+----
 
 ### Invoking REST Call from Server Script
 ```js
@@ -266,7 +269,7 @@ var response = r.execute();
 data.price = response.getBody();
 ```
 
-----------------------------------------------------------------------------------------------------------
+-----
 
 ### Using SWAL
 ###### Client Controller
@@ -298,9 +301,8 @@ if(checkFields()) {
 }
 ```
 
-----------------------------------------------------------------------------------------------------------
 
-----------------------------------------------------------------------------------------------------------
+----
 
 
 ## Misc
@@ -310,14 +312,14 @@ if(checkFields()) {
 data.typeahead = $sp.getWidgetFromInstance('typeahead-search');
 ```
 
-----------------------------------------------------------------------------------------------------------
+----
 
 ### Get Service Portal URL Suffix
 ```js
 var url_suffix = $sp.getPortalRecord().getValue('url_suffix');
 ```
 
-----------------------------------------------------------------------------------------------------------
+----
 
 ### Opening a Modal & Passing Scope to `$uibModal`
 ```js
@@ -330,7 +332,7 @@ $scope.openLogin = function () {
 ```
 Keywords: `modal`
 
-----------------------------------------------------------------------------------------------------------
+----
 
 ### Different Angular Dependencies
 ```js
@@ -347,7 +349,29 @@ SN Specific:
 Angular:
 - $location
 
-----------------------------------------------------------------------------------------------------------
+
+---
+
+### iFrames
+
+Server
+```js
+data.iframeURL = 'http://www.google.com';
+```
+
+Client
+```js
+function ($sce) {
+    $scope.iframeURL = $sce.trustAsResourceUrl(c.data.iframeURL);
+}
+```
+
+HTML
+```html
+<iframe ng-src="{{iframeURL}}"></iframe>
+```
+
+----
 
 ### iFrames in Service Portal and CSS manipulation
 ```html
@@ -379,7 +403,7 @@ Angular:
 </script>
 ```
 
-----------------------------------------------------------------------------------------------------------
+----
 
 ### Displaying select boxes
 ```html
@@ -403,7 +427,7 @@ Angular:
     </div>
 ```
 
-----------------------------------------------------------------------------------------------------------
+-----
 
 ### Iterating over objects while applying a filter
 ```html
@@ -412,7 +436,7 @@ Angular:
      ng-include="data.templateID">
 ```
 
-----------------------------------------------------------------------------------------------------------
+-----
 
 ### Display Choice Label instead of Choice Value
 ```js
@@ -425,7 +449,7 @@ while(ritm.next()){
 }
 ```
 
-----------------------------------------------------------------------------------------------------------
+-----
 
 ### Using `$interval` Service
 ```js
@@ -437,7 +461,7 @@ function($interval) {
 }
 ```
 
-----------------------------------------------------------------------------------------------------------
+----
 
 ### Force Reload
 ```js
@@ -446,11 +470,11 @@ c.server.update().then(function() {
 });
 ```
 
-----------------------------------------------------------------------------------------------------------
+----
 
 ### spNavStateManager
 
-----------------------------------------------------------------------------------------------------------
+------
 
 ### Opening Data Table Records in New Tabs
 One solution is as follows... Clone widget and change the following lines
