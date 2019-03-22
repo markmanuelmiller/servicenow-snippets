@@ -6,7 +6,14 @@
 - [Misc](#misc)
 
 
-## All
+### Setting Properties from Options
+Server
+```js
+data.hide_additional_information = (options.hide_additional_information == 'true') ? true : false;
+```
+
+---
+
 
 ### Exploring Client/Server Relationship
 
